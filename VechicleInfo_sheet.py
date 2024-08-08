@@ -7,10 +7,10 @@ wb1 = load_workbook('Vehicle information_20240728_213917.xlsx')#copy paste the s
 #Check if new sheet was made.If not, new sheet with openpyxl
 check_sheet = wb1.sheetnames
 if 'sorted' in wb1.sheetnames:#check if the file has been created
-    print('worksheet already exist')
+    print('worksheet already exist, processing')
 else:
     ws = wb1.create_sheet(title="sorted")#create a new sheet call 'sorted'
-    print("new sheet created") 
+    print("new sheet created, processing") 
 #print(wb1.sheetnames) #check if the worksheet are created
 ws = wb1['sorted']
 
@@ -30,15 +30,15 @@ with pd.ExcelWriter('Vehicle information_20240728_213917.xlsx', engine='openpyxl
 
 #check if the vehicle has delivery date, otherwise remove
 ws_sorted = pd.read_excel('Vehicle information_20240728_213917.xlsx', sheet_name='sorted')
-#empty_rows = ws_sorted[ws_sorted.iloc[:, 2].isna() | (ws_sorted.iloc[:, 2] == '')]
 #print(empty_rows) #test
-drop_row = ws_sorted[ws_sorted.iloc[:, 2].isna() | (ws_sorted.iloc[:, 2] == '')]
-drop_row = ws_sorted.dropna()#drop_row is the dataframe/worksheet that cleared empty delivery date vehicle
+#drop_row = ws_sorted[ws_sorted.iloc[:, 2].isna() | (ws_sorted.iloc[:, 2] == '')]
+ws_process = ws_sorted[ws_sorted.iloc[:, 2].isna() | (ws_sorted.iloc[:, 2] == '')]
+ws_process = ws_sorted.dropna()#drop_row is the dataframe/worksheet that cleared empty delivery date vehicle
 with pd.ExcelWriter('Vehicle information_20240728_213917.xlsx', engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
-    drop_row.to_excel(writer, sheet_name='sorted', index=False)
+    ws_process.to_excel(writer, sheet_name='sorted', index=False)
 
 
-#turn the country name into abbreviation
+#Replace the country name with abbreviation
 Country_code = {
     'Austria':'AT', 
     'Belgium':'BE',
@@ -56,10 +56,37 @@ Country_code = {
     'Portugal': 'PT',
     'Sweden':'SE'
 }
-drop_row.iloc[:,3] = drop_row.iloc[:,3].replace(Country_code)
+#country_code = ws_process
+ws_process.iloc[:,3] = ws_process.iloc[:,3].replace(Country_code)
 with pd.ExcelWriter('Vehicle information_20240728_213917.xlsx', engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
-    drop_row.to_excel(writer, sheet_name='sorted', index=False)
+   ws_process.to_excel(writer, sheet_name='sorted', index=False)
 
 
-#wb1.save('Vehicle information_20240728_213917.xlsx')# make changes on the excel file
-#drop_row.to_excel("Sorted.xlsx", index=False)#save the sorted sheet onto a new excel.
+#Replace the model name ######EXPANDING
+model_code = {
+    'BYD ATTO 3 LHD':'ATTO 3' ,
+    'Dolphin LHD': 'DOLPHIN',
+    'Seal LHD':'SEAL',
+    'UZ_SONGPLUS_DMI_LHD_2023':'',
+    'UZ_SONGPRO_DMI_LHD_2023':'',
+    'Chaser UZ':'',
+    'Han EV UZ':'',
+    'Song Plus UZ':'',
+    'Song Plus EV UZ 2023':''
+}
+#model_convert = ws_process
+ws_process.iloc[:,1] = ws_process.iloc[:,1].replace(model_code)
+with pd.ExcelWriter('Vehicle information_20240728_213917.xlsx', engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
+    ws_process.to_excel(writer, sheet_name='sorted', index=False)
+
+
+#move the columns, not finish
+ws["A1"].value='LICENSE'
+ws["B1"].value='VIN' 
+ws["C1"].value='MAKE'
+ws["D1"].value='MODEL'
+ws["E1"].value='COVERAGE VALID FROM'
+ws["F1"].value='COVERAGE VALID TO'
+ws["G1"].value='COUNTRY'
+wb1.save('Vehicle information_20240728_213917.xlsx')# make changes on the excel file
+#ws_process.to_excel("Sorted.xlsx", index=False)#save the sorted sheet onto a new excel.
