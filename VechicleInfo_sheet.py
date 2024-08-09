@@ -27,7 +27,6 @@ copiedColumn = [3, 9, 15, 23] #column of 'VIN','Vehicle series name','Delivery d
 selected_column = VItable.iloc[:, copiedColumn]
 #print(selected_column)
 with pd.ExcelWriter(wb_name, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
-with pd.ExcelWriter(wb_name, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
     selected_column.to_excel(writer, sheet_name='sorted', index=False)
 
 
@@ -38,7 +37,6 @@ ws_sorted = pd.read_excel(wb_name, sheet_name='sorted')
 #drop_row = ws_sorted[ws_sorted.iloc[:, 2].isna() | (ws_sorted.iloc[:, 2] == '')]
 ws_process = ws_sorted[ws_sorted.iloc[:, 2].isna() | (ws_sorted.iloc[:, 2] == '')]
 ws_process = ws_sorted.dropna()#drop_row is the dataframe/worksheet that cleared empty delivery date vehicle
-with pd.ExcelWriter(wb_name, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
 with pd.ExcelWriter(wb_name, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
     ws_process.to_excel(writer, sheet_name='sorted', index=False)
 
@@ -64,7 +62,6 @@ Country_code = {
 #country_code = ws_process
 ws_process.iloc[:,3] = ws_process.iloc[:,3].replace(Country_code)
 with pd.ExcelWriter(wb_name, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
-with pd.ExcelWriter(wb_name, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
    ws_process.to_excel(writer, sheet_name='sorted', index=False)
 
 
@@ -83,17 +80,16 @@ model_code = {
 #model_convert = ws_process
 ws_process.iloc[:,1] = ws_process.iloc[:,1].replace(model_code)
 with pd.ExcelWriter(wb_name, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
-with pd.ExcelWriter(wb_name, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
     ws_process.to_excel(writer, sheet_name='sorted', index=False)
 
 
 #move the columns, using openXL not finish 
-for row in range(1, ws.max_row + 1):
+'''for row in range(1, ws.max_row + 1):
     ws.cell(row=row, column=7).value = ws.cell(row=row, column=4).value#Copy country sales col from column D to column G
     ws.cell(row=row, column=5).value = ws.cell(row=row, column=3).value#Copy delivery date col from column C to column E
     ws.cell(row=row, column=4).value = ws.cell(row=row, column=2).value#Copy vehicle series col from column B to column D
     ws.cell(row=row, column=2).value = ws.cell(row=row, column=1).value#Copy VIN col from column A to column B
-wb1.save(wb_name)# make changes on the excel file
+wb1.save(wb_name)# make changes on the excel file'''
 
 
 
