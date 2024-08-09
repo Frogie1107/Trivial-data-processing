@@ -18,6 +18,7 @@ ws = wb1['sorted']
 
 #select the columns from 'Vehicle information' and append to the new sheet
 VItable = pd.read_excel(wb_name, sheet_name='Vehicle information')#read the excel sheet 'Vehicle information' from excel file
+VItable = pd.read_excel(wb_name, sheet_name='Vehicle information')#read the excel sheet 'Vehicle information' from excel file
 #VIN_column = [3]
 #VSname_column = [9]
 #Ddate_column = [15]
@@ -26,15 +27,18 @@ copiedColumn = [3, 9, 15, 23] #column of 'VIN','Vehicle series name','Delivery d
 selected_column = VItable.iloc[:, copiedColumn]
 #print(selected_column)
 with pd.ExcelWriter(wb_name, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
+with pd.ExcelWriter(wb_name, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
     selected_column.to_excel(writer, sheet_name='sorted', index=False)
 
 
 #check if the vehicle has delivery date, otherwise remove
 ws_sorted = pd.read_excel(wb_name, sheet_name='sorted')
+ws_sorted = pd.read_excel(wb_name, sheet_name='sorted')
 #print(empty_rows) #test
 #drop_row = ws_sorted[ws_sorted.iloc[:, 2].isna() | (ws_sorted.iloc[:, 2] == '')]
 ws_process = ws_sorted[ws_sorted.iloc[:, 2].isna() | (ws_sorted.iloc[:, 2] == '')]
 ws_process = ws_sorted.dropna()#drop_row is the dataframe/worksheet that cleared empty delivery date vehicle
+with pd.ExcelWriter(wb_name, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
 with pd.ExcelWriter(wb_name, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
     ws_process.to_excel(writer, sheet_name='sorted', index=False)
 
@@ -60,6 +64,7 @@ Country_code = {
 #country_code = ws_process
 ws_process.iloc[:,3] = ws_process.iloc[:,3].replace(Country_code)
 with pd.ExcelWriter(wb_name, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
+with pd.ExcelWriter(wb_name, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
    ws_process.to_excel(writer, sheet_name='sorted', index=False)
 
 
@@ -77,6 +82,7 @@ model_code = {
 }
 #model_convert = ws_process
 ws_process.iloc[:,1] = ws_process.iloc[:,1].replace(model_code)
+with pd.ExcelWriter(wb_name, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
 with pd.ExcelWriter(wb_name, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
     ws_process.to_excel(writer, sheet_name='sorted', index=False)
 
