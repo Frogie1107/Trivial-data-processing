@@ -12,8 +12,7 @@ if 'sorted' in wb1.sheetnames:#check if the file has been created
 else:
     ws = wb1.create_sheet(title="sorted")#create a new sheet call 'sorted'
     print("new sheet created, processing") 
-#print(wb1.sheetnames) #check if the worksheet are created
-#ws = wb1['sorted']
+#print(wb1.sheetnames) 
 
 
 #select the columns from 'Vehicle information' and append to the new sheet
@@ -67,9 +66,12 @@ with pd.ExcelWriter(wb_name, engine='openpyxl', mode='a', if_sheet_exists='repla
 
 #Replace the model name ######EXPANDING
 model_code = {
+    'Tang EV':'TANG',
     'BYD ATTO 3 LHD':'ATTO 3' ,
     'Dolphin LHD': 'DOLPHIN',
+    'Dolphin RHD':'DOLPHIN',
     'Seal LHD':'SEAL',
+    'EU SONG PLUS EV LHD 2023':'SEAL U EV',
     'UZ_SONGPLUS_DMI_LHD_2023':'',
     'UZ_SONGPRO_DMI_LHD_2023':'',
     'Chaser UZ':'',
@@ -85,13 +87,14 @@ with pd.ExcelWriter(wb_name, engine='openpyxl', mode='a', if_sheet_exists='repla
 
 #move the columns
 ws_move_col = wb1['sorted']
-max_row=ws_move_col.max_row
+max_row=ws_move_col.max_row#max_row = 1 in the first run
 column_mapping = {
     4:7,
     3:5,
     2:4,
     1:2,
 }
+#print(max_row)
 for row in range(1,max_row+1):
     for src_col, dest_col in column_mapping.items():
         cell_value = ws_move_col.cell(row=row, column=src_col).value
@@ -100,5 +103,5 @@ for row in range(1,max_row+1):
         ws_move_col.cell(row=row, column=src_col).value = None
 
 
-wb1.save('modified.xlsx')# make changes on the excel file
+#wb1.save('sorted.xlsx')# make changes on the excel file
 #ws_process.to_excel("Sorted.xlsx", index=False)#save the sorted sheet onto a new excel.
