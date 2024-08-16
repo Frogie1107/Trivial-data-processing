@@ -86,7 +86,8 @@ with pd.ExcelWriter(wb_name, engine='openpyxl', mode='a', if_sheet_exists='repla
 
 
 #move the columns
-ws_move_col = wb1['sorted']
+wb2 = load_workbook(wb_name)# B U G !!! I have to load the workbook again so that the worksheet can be updated
+ws_move_col = wb2['sorted']
 max_row=ws_move_col.max_row#max_row = 1 in the first run
 column_mapping = {
     4:7,
@@ -94,14 +95,14 @@ column_mapping = {
     2:4,
     1:2,
 }
-#print(max_row)
+print(max_row)
 for row in range(1,max_row+1):
     for src_col, dest_col in column_mapping.items():
         cell_value = ws_move_col.cell(row=row, column=src_col).value
         ws_move_col.cell(row=row, column=dest_col).value = cell_value
         # Optionally clear the original cell
         ws_move_col.cell(row=row, column=src_col).value = None
+wb2.save('sorted.xlsx')# make changes on the excel file
 
 
-#wb1.save('sorted.xlsx')# make changes on the excel file
 #ws_process.to_excel("Sorted.xlsx", index=False)#save the sorted sheet onto a new excel.
