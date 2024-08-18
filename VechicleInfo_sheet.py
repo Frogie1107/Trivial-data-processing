@@ -114,5 +114,9 @@ col_title = ['LICENSE PLATE','VIN','MAKE','MODEL','COVERAGE VALID FROM','COVERAG
 for col_index, value in enumerate(col_title, start=1):
     cell = ws_move_col.cell(row=1, column=col_index)
     cell.value = value
+
+
 wb2.save('sorted.xlsx')# make changes on the excel file
+df = pd.read_excel('sorted.xlsx', sheet_name='sorted', engine='openpyxl')
+df.to_csv('sorted.csv', index=False)
 #ws_process.to_excel("Sorted.xlsx", index=False)#save the sorted sheet onto a new excel.
