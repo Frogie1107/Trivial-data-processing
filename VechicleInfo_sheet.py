@@ -5,7 +5,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 
-wb_name = 'Vehicle information_20240816_223858.xlsx'#the file name to process
+wb_name = 'Vehicle information_20240913_093039.xlsx'#the file name to process
 
 wb1 = load_workbook(wb_name)#copy paste the sheet needed to process here 
 #Check if new sheet was made.If not, new sheet with openpyxl
@@ -108,7 +108,8 @@ for row in range(1,max_row+1):
         ws_move_col.cell(row=row, column=src_col).value = None
 for row in range(2,max_row+1):
     ws_move_col.cell(row=row, column=3).value = 'BYD' 
-    ws_move_col.cell(row=row, column=6).value = datetime.strptime(ws_move_col.cell(row=row, column=5).value, "%Y-%m-%d") + relativedelta(years=4)
+    ws_move_col.cell(row=row, column=5).value = datetime.strptime(ws_move_col.cell(row=row, column=5).value,"%Y-%m-%d")
+    ws_move_col.cell(row=row, column=6).value = ws_move_col.cell(row=row, column=5).value + relativedelta(years=2)
 # change the column title
 col_title = ['LICENSE PLATE','VIN','MAKE','MODEL','COVERAGE VALID FROM','COVERAGE VALID TO','COUNTRY']
 for col_index, value in enumerate(col_title, start=1):
