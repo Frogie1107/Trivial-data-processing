@@ -3,10 +3,6 @@ sftp.arceurope.com
 BYD
 gassed-qwEAMXScC5yF
 
-Power BI
-toby.zuo@glb.byd.com
-BYD@zzh980208
-
 Country list:
 AT - Austria
 BE - Belgium
